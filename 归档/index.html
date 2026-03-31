@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUTTONS × QQ音乐超级礼遇</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f0f0f0;
+            color: #fff;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        /* 手机设备框架 */
+        .phone-frame {
+            width: 390px;
+            height: 844px;
+            background-color: #000;
+            border-radius: 40px;
+            padding: 60px 20px 80px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 状态栏 */
+        .status-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 44px;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+        
+        .status-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .status-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* 内容容器 */
+        .container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow-y: auto;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Edge */
+        }
+        
+        /* 底部安全区域 */
+        .bottom-safe {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 34px;
+            background-color: #000;
+            z-index: 1000;
+        }
+        
+        /* 弹窗样式 */
+        .popup {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(0, 100, 50, 0.8));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .popup-content {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 24px;
+            padding: 30px 20px;
+            width: 80%;
+            max-width: 320px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 128, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .popup-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 128, 0.1), transparent);
+            animation: rotate 6s linear infinite;
+            z-index: 0;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .popup-content > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hali-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            border: 2px solid #00ff80;
+            box-shadow: 0 0 15px rgba(0, 255, 128, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .hali-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .popup-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #00ff80;
+            text-shadow: 0 0 8px rgba(0, 255, 128, 0.5);
+        }
+        
+        .popup-desc {
+            font-size: 13px;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        
+        .btn-primary {
+            background-color: #00ff80;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 255, 128, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background-color: #00e676;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(0, 255, 128, 0.4);
+        }
+        
+        /* 活动主页面 */
+        .activity-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-top: 10px;
+        }
+        
+        .activity-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00ff80;
+            margin-bottom: 8px;
+            text-shadow: 0 0 5px rgba(0, 255, 128, 0.5);
+        }
+        
+        .progress {
+            font-size: 12px;
+            color: #e0e0e0;
+            margin-bottom: 15px;
+        }
+        
+        .module-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .module-card {
+            background: rgba(20, 20, 20, 0.8);
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid rgba(0, 255, 128, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .module-card {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .module-card .button-container {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .module-card .module-btn {
+            flex: none;
+            width: calc(50% - 4px);
+            font-size: 12px;
+            padding: 8px 16px;
+        }
+        
+        .module-card:hover {
+            box-shadow: 0 4px 15px rgba(0, 255, 128, 0.3);
+            transform: translateY(-1px);
+        }
+        
+        .module-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #00ff80;
+            text-shadow: 0 0 5px rgba(0, 255, 128, 0.3);
+        }
+        
+        .module-desc {
+            font-size: 13px;
+            color: #e0e0e0;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .module-btn {
+            background-color: #00ff80;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0, 255, 128, 0.3);
+        }
+        
+        .module-btn:hover {
+            background-color: #00e676;
+            box-shadow: 0 5px 12px rgba(0, 255, 128, 0.4);
+        }
+        
+        .module-btn:disabled {
+            background-color: #666 !important;
+            cursor: not-allowed !important;
+        }
+        
+        /* 提示弹窗 */
+        .toast {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 1px solid #00ff80;
+            text-align: center;
+            z-index: 1001;
+            max-width: 85%;
+            white-space: nowrap;
+        }
+        
+        .toast-content {
+            color: #00ff80;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        /* 表单页面 */
+        .form-container {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(0, 255, 128, 0.2);
+        }
+        
+        .form-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00ff80;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 8px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 128, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            resize: none;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #00ff80;
+            box-shadow: 0 0 10px rgba(0, 255, 128, 0.3);
+        }
+        
+        .upload-btn {
+            background-color: rgba(0, 255, 128, 0.2);
+            color: #00ff80;
+            border: 1px solid #00ff80;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-btn:hover {
+            background-color: rgba(0, 255, 128, 0.3);
+        }
+        
+        /* 图片预览容器 */
+        .upload-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        
+        /* 已上传图片预览 */
+        .upload-preview-item {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 128, 0.3);
+            position: relative;
+        }
+        
+        .upload-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* 删除按钮 */
+        .upload-preview-item .delete-btn {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background-color: #ff4444;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 添加图片按钮 */
+        .upload-add-btn {
+            width: 80px;
+            height: 80px;
+            border: 2px dashed rgba(0, 255, 128, 0.5);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: rgba(0, 255, 128, 0.1);
+        }
+        
+        .upload-add-btn:hover {
+            background-color: rgba(0, 255, 128, 0.2);
+            border-color: rgba(0, 255, 128, 0.8);
+        }
+        
+        .upload-plus {
+            font-size: 32px;
+            color: #00ff80;
+            font-weight: 300;
+        }
+        
+        /* 隐藏类 */
+        .hidden {
+            display: none;
+        }
+        
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- 手机设备框架 -->
+    <div class="phone-frame">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-left">9:06</div>
+            <div class="status-right">
+                <span>📶</span>
+                <span>Wi-Fi</span>
+                <span>🔋</span>
+            </div>
+        </div>
+        
+        <!-- 活动弹窗 -->
+        <div id="popup" class="popup">
+            <div class="popup-content fade-in">
+                <button onclick="closePopup()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #00ff80; font-size: 18px; cursor: pointer;">×</button>
+                <div class="hali-image">
+                    <img src="HALI.png" alt="HALI">
+                </div>
+                <h2 class="popup-title">BUTTONS × QQ音乐</h2>
+                <h2 class="popup-title">超级礼遇</h2>
+                <p class="popup-desc">尊享百万曲库与臻品音质</p>
+                <button class="btn-primary" onclick="openActivityPage()">立即查收</button>
+            </div>
+        </div>
+        
+        <!-- 活动主页面 -->
+        <div id="activityPage" class="container hidden">
+            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; position: relative;">
+                <button onclick="closeActivity()" style="background: none; border: none; color: #00ff80; font-size: 20px; position: absolute; left: 0; top: 50%; transform: translateY(-50%); cursor: pointer;">&lt;</button>
+                <h1 class="activity-title" style="margin: 0;">BUTTONS × QQ音乐超级礼遇</h1>
+            </div>
+            <div class="activity-header">
+                <p class="progress">领取进度：0/3</p>
+            </div>
+            
+            <div class="module-list">
+                <!-- 模块1：查收礼遇 -->
+            <div class="module-card">
+                <h3 class="module-title">查收礼遇</h3>
+                <p class="module-desc">点击立即查收，领取QQ音乐超级会员月卡</p>
+                <div class="button-container">
+                    <button class="module-btn" onclick="claimGift()">立即查收</button>
+                </div>
+            </div>
+            
+            <!-- 模块2：关注官方账号 -->
+            <div class="module-card">
+                <h3 class="module-title">关注官方账号</h3>
+                <p class="module-desc">关注BUTTONS官方账号，领取QQ音乐超级会员月卡</p>
+                <div class="button-container">
+                    <button class="module-btn" onclick="followOfficial()">立即关注</button>
+                </div>
+            </div>
+            
+            <!-- 模块3：提交建议 -->
+            <div class="module-card">
+                <h3 class="module-title">提交建议</h3>
+                <p class="module-desc">提交您的宝贵建议，领取QQ音乐超级会员月卡</p>
+                <div class="button-container">
+                    <button class="module-btn" onclick="openSuggestionForm()">立即提交</button>
+                </div>
+            </div>
+            </div>
+        </div>
+        
+        <!-- 提交建议表单 -->
+        <div id="suggestionForm" class="container hidden">
+            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; position: relative;">
+                <button onclick="backToActivityFromForm()" style="background: none; border: none; color: #00ff80; font-size: 20px; position: absolute; left: 0; top: 50%; transform: translateY(-50%); cursor: pointer;">&lt;</button>
+                <h2 class="form-title" style="margin: 0;">提交建议</h2>
+            </div>
+            <div class="form-container">
+                <div class="form-group">
+                    <label class="form-label">建议内容</label>
+                    <textarea class="form-input" rows="4" placeholder="请输入您的建议..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">上传截图（可选）</label>
+                    <div class="upload-preview-container" id="uploadPreviewContainer">
+                        <!-- 已上传的图片将显示在这里 -->
+                        <div class="upload-add-btn" onclick="document.getElementById('fileInput').click()">
+                            <span class="upload-plus">+</span>
+                            <input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="handleImageUpload(this)">
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn-primary" style="width: 100%; margin-top: 20px;" onclick="submitSuggestion()">提交建议</button>
+            </div>
+        </div>
+        
+        <!-- 提示弹窗 -->
+        <div id="toast" class="toast hidden">
+            <p class="toast-content" id="toastMessage"></p>
+        </div>
+        
+        <!-- 兑换码页面 -->
+        <div id="codePage" class="container hidden">
+            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 30px; position: relative;">
+                <button onclick="backToActivity()" style="background: none; border: none; color: #00ff80; font-size: 20px; position: absolute; left: 0; top: 50%; transform: translateY(-50%); cursor: pointer;">&lt;</button>
+                <h1 class="activity-title">查看兑换码</h1>
+            </div>
+            
+            <div id="codeList" style="margin-bottom: 20px;">
+                <!-- 兑换码将通过JavaScript动态生成 -->
+            </div>
+            
+            <div style="background: rgba(20, 20, 20, 0.8); border-radius: 12px; padding: 15px; border: 1px solid rgba(0, 255, 128, 0.2);">
+                <h3 style="color: #00ff80; margin-bottom: 12px; font-size: 16px;">使用说明：</h3>
+                <ul style="list-style: disc; padding-left: 20px; color: #e0e0e0; font-size: 12px; line-height: 1.4;">
+                    <li>兑换方式：打开QQ音乐 → 点击右下角【我的】→ 点击页面上方的【会员】→ 下滑进入【兑换VIP】→ 输入兑换码 → 点击【立即兑换】完成。</li>
+                    <li>兑换前请务必确认您登录账号是正确的，会员服务一旦兑换成功，将无法撤销、转移或退款至其他账号。</li>
+                    <li>兑换码有效期：领取日至2026年5月31日。</li>
+                    <li>兑换码仅适用于QQ音乐，其他平台的兑换码无法在此渠道使用。</li>
+                    <li>兑换的会员时长会直接累加到您当前的会员有效期上。如果您是非会员，则从兑换当天开始计算时长。</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 底部安全区域 -->
+        <div class="bottom-safe"></div>
+    </div>
+    
+    <script>
+        // 全局变量
+        let progress = 0;
+        
+        // 打开活动页面
+        function openActivityPage() {
+            document.getElementById('popup').classList.add('hidden');
+            document.getElementById('activityPage').classList.remove('hidden');
+        }
+        
+        // 关闭弹窗
+        function closePopup() {
+            document.getElementById('popup').classList.add('hidden');
+            // 这里可以添加返回首页的逻辑
+        }
+        
+        // 关闭活动页面
+        function closeActivity() {
+            document.getElementById('activityPage').classList.add('hidden');
+            // 这里可以添加返回首页的逻辑
+        }
+        
+        // 领取礼遇
+        function claimGift() {
+            progress = 1;
+            updateProgress();
+            showToast('已解锁30天QQ音乐超级会员！');
+            
+            // 禁用按钮并添加查看兑换码按钮
+            const btn = document.querySelector('.module-card:nth-child(1) .module-btn');
+            btn.disabled = true;
+            btn.style.backgroundColor = '#666';
+            btn.style.cursor = 'not-allowed';
+            
+            // 添加查看兑换码按钮（如果不存在）
+            const container = document.querySelector('.module-card:nth-child(1) .button-container');
+            if (container.querySelectorAll('.module-btn').length === 1) {
+                const codeBtn = document.createElement('button');
+                codeBtn.className = 'module-btn';
+                codeBtn.textContent = '查看兑换码';
+                codeBtn.style.backgroundColor = '#00ff80';
+                codeBtn.onclick = () => openCodePage();
+                container.appendChild(codeBtn);
+            }
+        }
+        
+        // 关注官方账号
+        function followOfficial() {
+            // 跳转到BUTTONS品牌微信服务号
+            window.location.href = 'weixin://dl/officialaccounts?appid=BUTTONS';
+            
+            // 显示关注确认弹窗
+            setTimeout(() => {
+                showFollowConfirmDialog();
+            }, 500);
+        }
+        
+        // 显示关注确认弹窗
+        function showFollowConfirmDialog() {
+            // 创建确认弹窗
+            const dialog = document.createElement('div');
+            dialog.id = 'followConfirmDialog';
+            dialog.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 2000;
+            `;
+            
+            dialog.innerHTML = `
+                <div style="
+                    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+                    border-radius: 16px;
+                    padding: 30px 25px;
+                    width: 80%;
+                    max-width: 300px;
+                    text-align: center;
+                    border: 1px solid rgba(0, 255, 128, 0.3);
+                ">
+                    <h3 style="color: #00ff80; margin-bottom: 15px; font-size: 18px;">关注确认</h3>
+                    <p style="color: #e0e0e0; margin-bottom: 25px; font-size: 14px; line-height: 1.5;">请确认您已成功关注BUTTONS品牌微信服务号</p>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="closeFollowDialog()" style="
+                            flex: 1;
+                            background: transparent;
+                            color: #999;
+                            border: 1px solid #666;
+                            padding: 10px;
+                            border-radius: 8px;
+                            font-size: 14px;
+                            cursor: pointer;
+                        ">取消</button>
+                        <button onclick="confirmFollow()" style="
+                            flex: 1;
+                            background: #00ff80;
+                            color: #000;
+                            border: none;
+                            padding: 10px;
+                            border-radius: 8px;
+                            font-size: 14px;
+                            font-weight: bold;
+                            cursor: pointer;
+                        ">已关注</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(dialog);
+        }
+        
+        // 关闭关注确认弹窗
+        function closeFollowDialog() {
+            const dialog = document.getElementById('followConfirmDialog');
+            if (dialog) {
+                dialog.remove();
+            }
+        }
+        
+        // 确认已关注
+        function confirmFollow() {
+            closeFollowDialog();
+            
+            progress = 2;
+            updateProgress();
+            showToast('已解锁30天QQ音乐超级会员！');
+            
+            // 禁用按钮并添加查看兑换码按钮
+            const btn = document.querySelector('.module-card:nth-child(2) .module-btn');
+            btn.disabled = true;
+            btn.style.backgroundColor = '#666';
+            btn.style.cursor = 'not-allowed';
+            
+            // 添加查看兑换码按钮（如果不存在）
+            const container = document.querySelector('.module-card:nth-child(2) .button-container');
+            if (container.querySelectorAll('.module-btn').length === 1) {
+                const codeBtn = document.createElement('button');
+                codeBtn.className = 'module-btn';
+                codeBtn.textContent = '查看兑换码';
+                codeBtn.style.backgroundColor = '#00ff80';
+                codeBtn.onclick = () => openCodePage();
+                container.appendChild(codeBtn);
+            }
+        }
+        
+        // 打开建议表单
+        function openSuggestionForm() {
+            document.getElementById('activityPage').classList.add('hidden');
+            document.getElementById('suggestionForm').classList.remove('hidden');
+        }
+        
+        // 从表单返回活动页面
+        function backToActivityFromForm() {
+            document.getElementById('suggestionForm').classList.add('hidden');
+            document.getElementById('activityPage').classList.remove('hidden');
+        }
+        
+        // 提交建议
+        function submitSuggestion() {
+            const textarea = document.querySelector('.form-input');
+            const uploadContainer = document.getElementById('uploadPreviewContainer');
+            const uploadedImages = uploadContainer.querySelectorAll('.upload-preview-item');
+            
+            // 验证表单：既没有文字也没有截图时不能提交
+            if (!textarea.value.trim() && uploadedImages.length === 0) {
+                showToast('请输入建议内容或上传截图！');
+                return;
+            }
+            
+            progress = 3;
+            updateProgress();
+            
+            // 立即返回活动页面
+            document.getElementById('suggestionForm').classList.add('hidden');
+            document.getElementById('activityPage').classList.remove('hidden');
+            
+            // 显示Toast
+            showToast('已解锁30天QQ音乐超级会员！');
+            
+            // 禁用按钮并添加查看兑换码按钮
+            const btn = document.querySelector('.module-card:nth-child(3) .module-btn');
+            btn.disabled = true;
+            btn.style.backgroundColor = '#666';
+            btn.style.cursor = 'not-allowed';
+            
+            // 添加查看兑换码按钮（如果不存在）
+            const container = document.querySelector('.module-card:nth-child(3) .button-container');
+            if (container.querySelectorAll('.module-btn').length === 1) {
+                const codeBtn = document.createElement('button');
+                codeBtn.className = 'module-btn';
+                codeBtn.textContent = '查看兑换码';
+                codeBtn.style.backgroundColor = '#00ff80';
+                codeBtn.onclick = () => openCodePage();
+                container.appendChild(codeBtn);
+            }
+        }
+        
+        // 处理图片上传
+        function handleImageUpload(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    // 创建图片预览元素
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'upload-preview-item';
+                    previewItem.innerHTML = `
+                        <img src="${e.target.result}" alt="上传的图片">
+                        <button class="delete-btn" onclick="deleteImage(this)">×</button>
+                    `;
+                    
+                    // 获取容器和添加按钮
+                    const container = document.getElementById('uploadPreviewContainer');
+                    const addBtn = container.querySelector('.upload-add-btn');
+                    
+                    // 在添加按钮之前插入图片预览
+                    container.insertBefore(previewItem, addBtn);
+                };
+                
+                reader.readAsDataURL(file);
+            }
+            
+            // 清空input，允许重复选择同一文件
+            input.value = '';
+        }
+        
+        // 删除图片
+        function deleteImage(btn) {
+            const previewItem = btn.parentElement;
+            previewItem.remove();
+        }
+        
+        // 打开兑换码页面
+        function openCodePage() {
+            document.getElementById('activityPage').classList.add('hidden');
+            document.getElementById('codePage').classList.remove('hidden');
+            
+            // 生成兑换码列表
+            generateCodeList();
+        }
+        
+        // 返回活动页面
+        function backToActivity() {
+            document.getElementById('codePage').classList.add('hidden');
+            document.getElementById('activityPage').classList.remove('hidden');
+        }
+        
+        // 生成兑换码列表
+        function generateCodeList() {
+            const codeList = document.getElementById('codeList');
+            codeList.innerHTML = '';
+            
+            // 兑换码数据
+            const codes = [
+                '8KH6445Q3A2',
+                '7FJ5334W2B1',
+                '9LP7556E4C3'
+            ];
+            
+            // 根据进度显示对应数量的兑换码
+            for (let i = 0; i < progress; i++) {
+                const codeItem = document.createElement('div');
+                codeItem.style.cssText = `
+                    background: rgba(20, 20, 20, 0.8);
+                    border-radius: 12px;
+                    padding: 15px;
+                    border: 1px solid rgba(0, 255, 128, 0.2);
+                    margin-bottom: 12px;
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                `;
+                
+                const codeHeader = document.createElement('div');
+                codeHeader.style.cssText = `
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                `;
+                
+                const codeLabel = document.createElement('h3');
+                codeLabel.textContent = '兑换码';
+                codeLabel.style.cssText = 'color: #00ff80; margin: 0; font-size: 14px;';
+                
+                const stamp = document.createElement('div');
+                stamp.innerHTML = '<span style="display: inline-block; background: linear-gradient(45deg, #00ff80, #00e676); color: #000; font-size: 11px; font-weight: bold; padding: 3px 6px; border-radius: 8px; transform: rotate(15deg); box-shadow: 0 2px 4px rgba(0,0,0,0.3);">已发放</span>';
+                
+                codeHeader.appendChild(codeLabel);
+                codeHeader.appendChild(stamp);
+                
+                const codeValue = document.createElement('div');
+                codeValue.textContent = codes[i];
+                codeValue.style.cssText = 'font-size: 16px; font-weight: bold; color: #fff; letter-spacing: 1px;';
+                
+                const copyBtn = document.createElement('button');
+                copyBtn.textContent = '复制兑换码';
+                copyBtn.style.cssText = `
+                    background: linear-gradient(45deg, #00ff80, #00e676);
+                    color: #000;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: 16px;
+                    font-size: 12px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    align-self: flex-start;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 3px 6px rgba(0, 255, 128, 0.3);
+                `;
+                
+                copyBtn.onclick = function() {
+                    navigator.clipboard.writeText(codes[i]).then(function() {
+                        showToast('兑换码已复制！');
+                    });
+                };
+                
+                codeItem.appendChild(codeHeader);
+                codeItem.appendChild(codeValue);
+                codeItem.appendChild(copyBtn);
+                
+                codeList.appendChild(codeItem);
+            }
+        }
+        
+        // 更新进度
+        function updateProgress() {
+            document.querySelector('.progress').textContent = `领取进度：${progress}/3`;
+        }
+        
+        // 显示提示
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.classList.remove('hidden');
+            
+            // 3秒后隐藏
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+        
+        // 初始化
+        window.onload = function() {
+            // 模拟首次登录触发弹窗
+            setTimeout(() => {
+                document.getElementById('popup').classList.remove('hidden');
+            }, 500);
+        };
+    </script>
+</body>
+</html>

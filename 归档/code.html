@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUTTONS × QQ音乐超级礼遇 - 兑换码</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f0f0f0;
+            color: #fff;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        /* 手机设备框架 */
+        .phone-frame {
+            width: 390px;
+            height: 844px;
+            background-color: #000;
+            border-radius: 40px;
+            padding: 60px 20px 80px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 状态栏 */
+        .status-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 44px;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+        
+        .status-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .status-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* 内容容器 */
+        .container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow-y: auto;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Edge */
+        }
+        
+        /* 底部安全区域 */
+        .bottom-safe {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 34px;
+            background-color: #000;
+            z-index: 1000;
+        }
+        
+        /* 活动主页面 */
+        .activity-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00ff80;
+            margin-bottom: 8px;
+            text-shadow: 0 0 5px rgba(0, 255, 128, 0.5);
+        }
+        
+        /* 提示弹窗 */
+        .toast {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 1px solid #00ff80;
+            text-align: center;
+            z-index: 1001;
+            max-width: 85%;
+            white-space: nowrap;
+        }
+        
+        .toast-content {
+            color: #00ff80;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        /* 隐藏类 */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 手机设备框架 -->
+    <div class="phone-frame">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-left">9:06</div>
+            <div class="status-right">
+                <span>📶</span>
+                <span>Wi-Fi</span>
+                <span>🔋</span>
+            </div>
+        </div>
+        
+        <!-- 兑换码页面 -->
+        <div id="codePage" class="container">
+            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 30px; position: relative;">
+                <button onclick="backToActivity()" style="background: none; border: none; color: #00ff80; font-size: 20px; position: absolute; left: 0; top: 50%; transform: translateY(-50%); cursor: pointer;">&lt;</button>
+                <h1 class="activity-title">查看兑换码</h1>
+            </div>
+            
+            <div id="codeList" style="margin-bottom: 20px;">
+                <!-- 兑换码将通过JavaScript动态生成 -->
+                <div style="
+                    background: rgba(20, 20, 20, 0.8);
+                    border-radius: 12px;
+                    padding: 15px;
+                    border: 1px solid rgba(0, 255, 128, 0.2);
+                    margin-bottom: 12px;
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                ">
+                    <div style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    ">
+                        <h3 style="color: #00ff80; margin: 0; font-size: 14px;">兑换码</h3>
+                        <div><span style="display: inline-block; background: linear-gradient(45deg, #00ff80, #00e676); color: #000; font-size: 11px; font-weight: bold; padding: 3px 6px; border-radius: 8px; transform: rotate(15deg); box-shadow: 0 2px 4px rgba(0,0,0,0.3);">已发放</span></div>
+                    </div>
+                    <div style="font-size: 16px; font-weight: bold; color: #fff; letter-spacing: 1px;">8KH6445Q3A2</div>
+                    <button onclick="copyCode('8KH6445Q3A2')" style="
+                        background: linear-gradient(45deg, #00ff80, #00e676);
+                        color: #000;
+                        border: none;
+                        padding: 8px 16px;
+                        border-radius: 16px;
+                        font-size: 12px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        align-self: flex-start;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 3px 6px rgba(0, 255, 128, 0.3);
+                    ">复制兑换码</button>
+                </div>
+                
+                <div style="
+                    background: rgba(20, 20, 20, 0.8);
+                    border-radius: 12px;
+                    padding: 15px;
+                    border: 1px solid rgba(0, 255, 128, 0.2);
+                    margin-bottom: 12px;
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                ">
+                    <div style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    ">
+                        <h3 style="color: #00ff80; margin: 0; font-size: 14px;">兑换码</h3>
+                        <div><span style="display: inline-block; background: linear-gradient(45deg, #00ff80, #00e676); color: #000; font-size: 11px; font-weight: bold; padding: 3px 6px; border-radius: 8px; transform: rotate(15deg); box-shadow: 0 2px 4px rgba(0,0,0,0.3);">已发放</span></div>
+                    </div>
+                    <div style="font-size: 16px; font-weight: bold; color: #fff; letter-spacing: 1px;">7FJ5334W2B1</div>
+                    <button onclick="copyCode('7FJ5334W2B1')" style="
+                        background: linear-gradient(45deg, #00ff80, #00e676);
+                        color: #000;
+                        border: none;
+                        padding: 8px 16px;
+                        border-radius: 16px;
+                        font-size: 12px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        align-self: flex-start;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 3px 6px rgba(0, 255, 128, 0.3);
+                    ">复制兑换码</button>
+                </div>
+                
+                <div style="
+                    background: rgba(20, 20, 20, 0.8);
+                    border-radius: 12px;
+                    padding: 15px;
+                    border: 1px solid rgba(0, 255, 128, 0.2);
+                    margin-bottom: 12px;
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                ">
+                    <div style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    ">
+                        <h3 style="color: #00ff80; margin: 0; font-size: 14px;">兑换码</h3>
+                        <div><span style="display: inline-block; background: linear-gradient(45deg, #00ff80, #00e676); color: #000; font-size: 11px; font-weight: bold; padding: 3px 6px; border-radius: 8px; transform: rotate(15deg); box-shadow: 0 2px 4px rgba(0,0,0,0.3);">已发放</span></div>
+                    </div>
+                    <div style="font-size: 16px; font-weight: bold; color: #fff; letter-spacing: 1px;">9LP7556E4C3</div>
+                    <button onclick="copyCode('9LP7556E4C3')" style="
+                        background: linear-gradient(45deg, #00ff80, #00e676);
+                        color: #000;
+                        border: none;
+                        padding: 8px 16px;
+                        border-radius: 16px;
+                        font-size: 12px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        align-self: flex-start;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 3px 6px rgba(0, 255, 128, 0.3);
+                    ">复制兑换码</button>
+                </div>
+            </div>
+            
+            <div style="background: rgba(20, 20, 20, 0.8); border-radius: 12px; padding: 15px; border: 1px solid rgba(0, 255, 128, 0.2);">
+                <h3 style="color: #00ff80; margin-bottom: 12px; font-size: 16px;">使用说明：</h3>
+                <ul style="list-style: disc; padding-left: 20px; color: #e0e0e0; font-size: 12px; line-height: 1.4;">
+                    <li>兑换方式：打开QQ音乐 → 点击右下角【我的】→ 点击页面上方的【会员】→ 下滑进入【兑换VIP】→ 输入兑换码 → 点击【立即兑换】完成。</li>
+                    <li>兑换前请务必确认您登录账号是正确的，会员服务一旦兑换成功，将无法撤销、转移或退款至其他账号。</li>
+                    <li>兑换码有效期：领取日至2026年5月31日。</li>
+                    <li>兑换码仅适用于QQ音乐，其他平台的兑换码无法在此渠道使用。</li>
+                    <li>兑换的会员时长会直接累加到您当前的会员有效期上。如果您是非会员，则从兑换当天开始计算时长。</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 提示弹窗 -->
+        <div id="toast" class="toast hidden">
+            <p class="toast-content" id="toastMessage"></p>
+        </div>
+        
+        <!-- 底部安全区域 -->
+        <div class="bottom-safe"></div>
+    </div>
+    
+    <script>
+        // 返回活动页面
+        function backToActivity() {
+            window.location.href = 'activity.html';
+        }
+        
+        // 复制兑换码
+        function copyCode(code) {
+            navigator.clipboard.writeText(code).then(function() {
+                showToast('兑换码已复制！');
+            });
+        }
+        
+        // 显示提示
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.classList.remove('hidden');
+            
+            // 3秒后隐藏
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

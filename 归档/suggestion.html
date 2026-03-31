@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUTTONS × QQ音乐超级礼遇 - 提交建议</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f0f0f0;
+            color: #fff;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        /* 手机设备框架 */
+        .phone-frame {
+            width: 390px;
+            height: 844px;
+            background-color: #000;
+            border-radius: 40px;
+            padding: 60px 20px 80px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 状态栏 */
+        .status-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 44px;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+        
+        .status-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .status-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* 内容容器 */
+        .container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow-y: auto;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Edge */
+        }
+        
+        /* 底部安全区域 */
+        .bottom-safe {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 34px;
+            background-color: #000;
+            z-index: 1000;
+        }
+        
+        /* 表单页面 */
+        .form-container {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(0, 255, 128, 0.2);
+        }
+        
+        .form-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00ff80;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 8px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 128, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            resize: none;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #00ff80;
+            box-shadow: 0 0 10px rgba(0, 255, 128, 0.3);
+        }
+        
+        .upload-btn {
+            background-color: rgba(0, 255, 128, 0.2);
+            color: #00ff80;
+            border: 1px solid #00ff80;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-btn:hover {
+            background-color: rgba(0, 255, 128, 0.3);
+        }
+        
+        /* 图片预览容器 */
+        .upload-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        
+        /* 已上传图片预览 */
+        .upload-preview-item {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 128, 0.3);
+            position: relative;
+        }
+        
+        .upload-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* 删除按钮 */
+        .upload-preview-item .delete-btn {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background-color: #ff4444;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 添加图片按钮 */
+        .upload-add-btn {
+            width: 80px;
+            height: 80px;
+            border: 2px dashed rgba(0, 255, 128, 0.5);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: rgba(0, 255, 128, 0.1);
+        }
+        
+        .upload-add-btn:hover {
+            background-color: rgba(0, 255, 128, 0.2);
+            border-color: rgba(0, 255, 128, 0.8);
+        }
+        
+        .upload-plus {
+            font-size: 32px;
+            color: #00ff80;
+            font-weight: 300;
+        }
+        
+        /* 提示弹窗 */
+        .toast {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 1px solid #00ff80;
+            text-align: center;
+            z-index: 1001;
+            max-width: 85%;
+            white-space: nowrap;
+        }
+        
+        .toast-content {
+            color: #00ff80;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .btn-primary {
+            background-color: #00ff80;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 255, 128, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background-color: #00e676;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(0, 255, 128, 0.4);
+        }
+        
+        /* 隐藏类 */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 手机设备框架 -->
+    <div class="phone-frame">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-left">9:06</div>
+            <div class="status-right">
+                <span>📶</span>
+                <span>Wi-Fi</span>
+                <span>🔋</span>
+            </div>
+        </div>
+        
+        <!-- 提交建议表单 -->
+        <div id="suggestionForm" class="container">
+            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; position: relative;">
+                <button onclick="backToActivityFromForm()" style="background: none; border: none; color: #00ff80; font-size: 20px; position: absolute; left: 0; top: 50%; transform: translateY(-50%); cursor: pointer;">&lt;</button>
+                <h2 class="form-title" style="margin: 0;">提交建议</h2>
+            </div>
+            <div class="form-container">
+                <div class="form-group">
+                    <label class="form-label">建议内容</label>
+                    <textarea class="form-input" rows="4" placeholder="请输入您的建议..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">上传截图（可选）</label>
+                    <div class="upload-preview-container" id="uploadPreviewContainer">
+                        <!-- 已上传的图片将显示在这里 -->
+                        <div class="upload-add-btn" onclick="document.getElementById('fileInput').click()">
+                            <span class="upload-plus">+</span>
+                            <input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="handleImageUpload(this)">
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn-primary" style="width: 100%; margin-top: 20px;" onclick="submitSuggestion()">提交建议</button>
+            </div>
+        </div>
+        
+        <!-- 提示弹窗 -->
+        <div id="toast" class="toast hidden">
+            <p class="toast-content" id="toastMessage"></p>
+        </div>
+        
+        <!-- 底部安全区域 -->
+        <div class="bottom-safe"></div>
+    </div>
+    
+    <script>
+        // 从表单返回活动页面
+        function backToActivityFromForm() {
+            window.location.href = 'activity.html';
+        }
+        
+        // 提交建议
+        function submitSuggestion() {
+            const textarea = document.querySelector('.form-input');
+            const uploadContainer = document.getElementById('uploadPreviewContainer');
+            const uploadedImages = uploadContainer.querySelectorAll('.upload-preview-item');
+            
+            // 验证表单：既没有文字也没有截图时不能提交
+            if (!textarea.value.trim() && uploadedImages.length === 0) {
+                showToast('请输入建议内容或上传截图！');
+                return;
+            }
+            
+            // 显示Toast
+            showToast('已解锁30天QQ音乐超级会员！');
+            
+            // 立即返回活动页面
+            setTimeout(() => {
+                window.location.href = 'activity.html';
+            }, 1000);
+        }
+        
+        // 处理图片上传
+        function handleImageUpload(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    // 创建图片预览元素
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'upload-preview-item';
+                    previewItem.innerHTML = `
+                        <img src="${e.target.result}" alt="上传的图片">
+                        <button class="delete-btn" onclick="deleteImage(this)">×</button>
+                    `;
+                    
+                    // 获取容器和添加按钮
+                    const container = document.getElementById('uploadPreviewContainer');
+                    const addBtn = container.querySelector('.upload-add-btn');
+                    
+                    // 在添加按钮之前插入图片预览
+                    container.insertBefore(previewItem, addBtn);
+                };
+                
+                reader.readAsDataURL(file);
+            }
+            
+            // 清空input，允许重复选择同一文件
+            input.value = '';
+        }
+        
+        // 删除图片
+        function deleteImage(btn) {
+            const previewItem = btn.parentElement;
+            previewItem.remove();
+        }
+        
+        // 显示提示
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.classList.remove('hidden');
+            
+            // 3秒后隐藏
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
