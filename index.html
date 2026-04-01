@@ -634,12 +634,151 @@
         // 关注官方账号
         function followOfficial() {
             // 跳转到BUTTONS品牌微信服务号
-            window.location.href = 'weixin://dl/officialaccounts?appid=wxf22bc423c4eaf0a7';
+            // 方法1：使用公众号原始ID跳转
+            // window.location.href = 'weixin://profile/gh_1d45c6ff1607';
             
-            // 显示关注确认弹窗
-            setTimeout(() => {
-                showFollowConfirmDialog();
-            }, 500);
+            // 方法2：使用二维码图片显示
+            showQRCodeDialog();
+        }
+        
+        // 显示二维码弹窗
+        function showQRCodeDialog() {
+            // 创建二维码弹窗
+            const dialog = document.createElement('div');
+            dialog.id = 'qrCodeDialog';
+            dialog.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 2000;
+            `;
+            
+            dialog.innerHTML = `
+                <div style="
+                    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+                    border-radius: 16px;
+                    padding: 30px 25px;
+                    width: 80%;
+                    max-width: 300px;
+                    text-align: center;
+                    border: 1px solid rgba(0, 255, 128, 0.3);
+                ">
+                    <h3 style="color: #00ff80; margin-bottom: 20px; font-size: 18px;">关注官方账号</h3>
+                    <div style="margin-bottom: 25px;">
+                        <img src="https://via.placeholder.com/200x200/333/666?text=公众号二维码" style="width: 200px; height: 200px; border-radius: 8px; background: #333; color: #666; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                    </div>
+                    <p style="color: #e0e0e0; margin-bottom: 25px; font-size: 14px; line-height: 1.5;">请使用微信扫码关注BUTTONS品牌微信服务号</p>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="closeQRCodeDialog()" style="
+                            flex: 1;
+                            background: transparent;
+                            color: #999;
+                            border: 1px solid #666;
+                            padding: 10px;
+                            border-radius: 8px;
+                            font-size: 14px;
+                            cursor: pointer;
+                        ">取消</button>
+                        <button onclick="confirmFollow()" style="
+                            flex: 1;
+                            background: #00ff80;
+                            color: #000;
+                            border: none;
+                            padding: 10px;
+                            border-radius: 8px;
+                            font-size: 14px;
+                            font-weight: bold;
+                            cursor: pointer;
+                        ">已关注</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(dialog);
+        }
+        
+        // 关闭二维码弹窗
+        function closeQRCodeDialog() {
+            const dialog = document.getElementById('qrCodeDialog');
+            if (dialog) {
+                dialog.remove();
+            }
+        }
+        
+        // 显示二维码弹窗
+        function showQRCodeDialog() {
+            // 创建二维码弹窗
+            const dialog = document.createElement('div');
+            dialog.id = 'qrCodeDialog';
+            dialog.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 2000;
+            `;
+            
+            dialog.innerHTML = `
+                <div style="
+                    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+                    border-radius: 16px;
+                    padding: 30px 25px;
+                    width: 80%;
+                    max-width: 300px;
+                    text-align: center;
+                    border: 1px solid rgba(0, 255, 128, 0.3);
+                ">
+                    <h3 style="color: #00ff80; margin-bottom: 20px; font-size: 18px;">关注官方账号</h3>
+                    <div style="margin-bottom: 25px;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzA5NzM2MDM1MA==" style="width: 200px; height: 200px; border-radius: 8px;">
+                    </div>
+                    <p style="color: #e0e0e0; margin-bottom: 25px; font-size: 14px; line-height: 1.5;">请使用微信扫码关注BUTTONS品牌微信服务号</p>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="closeQRCodeDialog()" style="
+                            flex: 1;
+                            background: transparent;
+                            color: #999;
+                            border: 1px solid #666;
+                            padding: 10px;
+                            border-radius: 8px;
+                            font-size: 14px;
+                            cursor: pointer;
+                        ">取消</button>
+                        <button onclick="confirmFollow()" style="
+                            flex: 1;
+                            background: #00ff80;
+                            color: #000;
+                            border: none;
+                            padding: 10px;
+                            border-radius: 8px;
+                            font-size: 14px;
+                            font-weight: bold;
+                            cursor: pointer;
+                        ">已关注</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(dialog);
+        }
+        
+        // 关闭二维码弹窗
+        function closeQRCodeDialog() {
+            const dialog = document.getElementById('qrCodeDialog');
+            if (dialog) {
+                dialog.remove();
+            }
         }
         
         // 显示关注确认弹窗
